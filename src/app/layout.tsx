@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import { defaultMetadata } from "@/lib/seo";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -7,14 +8,16 @@ import { GoogleAnalytics } from "@/lib/analytics";
 
 export const metadata: Metadata = defaultMetadata;
 
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className="antialiased text-neutral-900 bg-white">
+    <html lang="en" className={inter.variable}>
+      <body className="font-sans min-h-screen grid grid-rows-[auto_1fr_auto]">
         <Navbar />
         <main>{children}</main>
         <Footer />
-        {/* Organization JSON-LD */}
+        {/* Org JSON-LD */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

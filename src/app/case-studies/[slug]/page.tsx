@@ -20,12 +20,20 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 export default function CaseStudyPage({ params }: { params: { slug: string } }) {
   const cs = CASE_STUDIES.find(c => c.slug === params.slug)!;
   return (
-    <Container>
-      <article className="prose max-w-none prose-neutral mt-12">
+    <Container className="py-12">
+      <article className="prose max-w-none">
         <h1>{cs.title}</h1>
         <p className="lead">{cs.summary}</p>
-        <hr />
-        <p>Long-form write-up goes here. Add build notes, CAD, BOM, testing, and business results.</p>
+        <h2>Problem</h2>
+        <p>What constraints, use-cases, and user insights drove the concept?</p>
+        <h2>Process</h2>
+        <ul>
+          <li>Sketch → CAD → prototype loops</li>
+          <li>Ergonomic validation + material selection</li>
+          <li>Electronics & firmware iterations (if applicable)</li>
+        </ul>
+        <h2>Outcome</h2>
+        <p>Quantify impact, reliability improvements, cost reductions, or time saved.</p>
       </article>
     </Container>
   );

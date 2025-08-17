@@ -4,7 +4,7 @@ import * as Icons from "lucide-react";
 
 export default function SocialLinks({ className = "" }: { className?: string }) {
   return (
-    <div className={`flex items-center gap-4 ${className}`}>
+    <div className={`flex items-center gap-3 ${className}`}>
       {socials.map((s) => {
         const Icon = (Icons as any)[s.icon] || Icons.Link;
         return (
@@ -15,6 +15,7 @@ export default function SocialLinks({ className = "" }: { className?: string }) 
             rel="noopener noreferrer"
             className="text-neutral-600 hover:text-black transition"
             aria-label={s.label}
+            title={s.label}
           >
             <Icon className="h-5 w-5" />
           </a>
