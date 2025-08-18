@@ -1,10 +1,11 @@
+// src/app/(site)/work/page.tsx
 import NotebookNav from "@/components/NotebookNav";
 import Link from "next/link";
 import CASE_STUDIES, {
   CASE_STUDIES_BY_YEAR as EXPORTED_BY_YEAR,
   PROJECT_YEARS as EXPORTED_YEARS,
   type CaseStudy,
-} from "@/data/caseStudies/index"; // <-- note the explicit /index
+} from "@/data/caseStudies/index";
 
 // local fallback grouper (in case imports ever fail)
 function groupLocal(items?: CaseStudy[] | null) {
@@ -46,16 +47,14 @@ export default function WorkPage() {
 
                   <ul className="space-y-8">
                     {(byYear[year] ?? []).map((p) => (
-                      <li key={p.slug} className="relative pl-6 sm:pl-8">
-                        <span
-                          aria-hidden
-                          className="pointer-events-none absolute left-0 top-0 bottom-0 w-[3px] bg-neutral-200"
-                        />
+                      // removed left padding & gutter line
+                      <li key={p.slug} className="relative">
                         <Link
                           href={`/work/${p.slug}`}
-                          className="group grid grid-cols-[112px_1fr] gap-4 rounded-2xl border bg-white p-4 transition hover:shadow-soft sm:grid-cols-[128px_1fr]"
+                          className="group grid grid-cols-[112px_1fr] gap-4 rounded-2xl bg-white p-4 shadow-xl transition hover:shadow-md sm:grid-cols-[128px_1fr]"
                         >
-                          <div className="relative overflow-hidden rounded-lg border bg-neutral-50">
+                          {/* no border on the image wrapper */}
+                          <div className="relative overflow-hidden rounded-xl bg-neutral-50">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             {p.cover ? (
                               <img
@@ -91,6 +90,7 @@ export default function WorkPage() {
                           </div>
                         </Link>
 
+                        {/* keep a light divider between cards (optional) */}
                         <div className="mt-6 h-px bg-neutral-200" />
                       </li>
                     ))}

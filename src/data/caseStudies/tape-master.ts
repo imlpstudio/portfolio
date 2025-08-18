@@ -4,7 +4,7 @@ const tapeMaster = {
   summary:
     "Ergonomic, waist-holsterable tape system with magnetic retention and quick indexing.",
   tags: ["Ergonomics", "Prototyping", "Manufacturing"],
-  cover: "/covers/tape-master.jpg",
+  cover: "/hero/1a.png",
   date: "2025-07-20",
 } as const;
 
