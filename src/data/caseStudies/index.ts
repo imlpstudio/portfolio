@@ -1,7 +1,9 @@
 import tapeMaster from "./tape-master";
-import frequencyEmitter from "./tape-master";
-import ergonomicFixture from "./tape-master";
-import esp32Logger from "./tape-master";
+import brush from "./brush";
+import tibetansmacker from "./tibetan-smacker";
+// If you don't have pages for these yet, leave them out for now to avoid 404s
+// import ergonomicFixture from "./ergonomic-fixture";
+// import esp32Logger from "./esp32-logger";
 
 export type CaseStudy = {
   slug: string;
@@ -14,9 +16,10 @@ export type CaseStudy = {
 
 export const CASE_STUDIES: CaseStudy[] = [
   tapeMaster,
-  frequencyEmitter,
-  ergonomicFixture,
-  esp32Logger,
+  brush,
+  tibetansmacker,
+  // ergonomicFixture,
+  // esp32Logger,
 ].sort((a, b) => +new Date(b.date) - +new Date(a.date));
 
 export type CaseStudiesByYear = Record<string, CaseStudy[]>;

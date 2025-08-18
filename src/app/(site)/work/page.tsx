@@ -33,29 +33,21 @@ export default function WorkPage() {
         <NotebookNav />
 
         <div className="py-8 sm:py-12 lg:py-16 mt-16 sm:mt-20">
-          <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-12">
-            <p className="font-mono text-[11px] sm:text-xs tracking-widest text-neutral-500">CASE STUDIES</p>
-            <h1 className="mt-1 font-mono text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900">Projects</h1>
-            <p className="mt-2 text-neutral-700">Selected work and process highlights.</p>
+          <div className="mx-auto max-w-5xl px-4 sm:px-2 lg:px-8">
+            <p className="font-mono text-[11px] sm:text-xs tracking-widest text-neutral-500">2025</p>
+            <h1 className="mt-1 font-mono text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900">CASE STUDIES</h1>
+            <p className="mt-2 text-neutral-700 font-inter ">Selected work and process highlights.</p>
 
-            <div className="mt-6 sm:mt-8 space-y-10 sm:space-y-12">
+            <div className="mt-6 sm:mt-8 lg:-ml-14 space-y-10 sm:space-y-12">
               {years.map((year) => (
                 <section key={year} aria-labelledby={`y-${year}`} className="space-y-5 sm:space-y-6">
-                  <h2
-                    id={`y-${year}`}
-                    className="font-mono text-xs sm:text-sm tracking-widest text-neutral-500"
-                  >
-                    {year}
-                  </h2>
+                  
 
                   <ul className="space-y-5 sm:space-y-8">
                     {(byYear[year] ?? []).map((p) => (
                       <li key={p.slug} className="relative pl-0 sm:pl-8">
                         {/* notebook gutter (hide on mobile) */}
-                        <span
-                          aria-hidden
-                          className="hidden sm:block pointer-events-none absolute left-0 top-0 bottom-0 w-[3px] bg-neutral-200"
-                        />
+                        
                         <Link
                           href={`/work/${p.slug}`}
                           className="group grid grid-cols-[88px_1fr] sm:grid-cols-[128px_1fr] gap-3 sm:gap-4 rounded-2xl bg-white p-3 sm:p-4 transition shadow-soft hover:shadow-md"
