@@ -1,4 +1,5 @@
 // src/app/(site)/work/page.tsx
+import Image from "next/image";                 // ⬅️ add this
 import NotebookNav from "@/components/NotebookNav";
 import Link from "next/link";
 import CASE_STUDIES, {
@@ -7,25 +8,12 @@ import CASE_STUDIES, {
   type CaseStudy,
 } from "@/data/caseStudies/index";
 
-// local fallback grouper (in case imports ever fail)
-function groupLocal(items?: CaseStudy[] | null) {
-  const by: Record<string, CaseStudy[]> = {};
-  const list = Array.isArray(items) ? items : [];
-  for (const cs of list) {
-    const y = new Date(cs.date).getFullYear().toString();
-    (by[y] ||= []).push(cs);
-  }
-  for (const y of Object.keys(by)) {
-    by[y].sort((a, b) => +new Date(b.date) - +new Date(a.date));
-  }
-  return by;
-}
+// ... keep your helper/grouping code the same ...
 
 export default function WorkPage() {
   const LIST = Array.isArray(CASE_STUDIES) ? CASE_STUDIES : [];
   const byYear = EXPORTED_BY_YEAR ?? groupLocal(LIST);
-  const years =
-    EXPORTED_YEARS ?? Object.keys(byYear).map(String).sort((a, b) => +b - +a);
+  const years = EXPORTED_YEARS ?? Object.keys(byYear).map(String).sort((a, b) => +b - +a);
 
   return (
     <section className="bg-white text-neutral-900">
@@ -47,24 +35,23 @@ export default function WorkPage() {
 
                   <ul className="space-y-8">
                     {(byYear[year] ?? []).map((p) => (
-                      // removed left padding & gutter line
-                      <li key={p.slug} className="relative">
+                      <li key={p.slug} className="relative pl-6 sm:pl-8">
+                        <span aria-hidden className="pointer-events-none absolute left-0 top-0 bottom-0 w-[3px] bg-neutral-200" />
                         <Link
                           href={`/work/${p.slug}`}
-                          className="group grid grid-cols-[112px_1fr] gap-4 rounded-2xl bg-white p-4 shadow-xl transition hover:shadow-md sm:grid-cols-[128px_1fr]"
+                          className="group grid grid-cols-[112px_1fr] gap-4 rounded-2xl bg-white p-4 transition shadow-soft hover:shadow-md sm:grid-cols-[128px_1fr]"
                         >
-                          {/* no border on the image wrapper */}
-                          <div className="relative overflow-hidden rounded-xl bg-neutral-50">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                          {/* thumb with next/image */}
+                          <div className="relative h-[84px] sm:h-[96px] overflow-hidden rounded-lg border bg-neutral-50">
                             {p.cover ? (
-                              <img
+                              <Image
                                 src={p.cover}
                                 alt={p.title}
-                                className="h-[84px] w-full object-cover sm:h-[96px]"
+                                fill
+                                sizes="128px"
+                                className="object-cover"
                               />
-                            ) : (
-                              <div className="h-[84px] w-full sm:h-[96px]" />
-                            )}
+                            ) : null}
                           </div>
 
                           <div className="min-w-0">
@@ -74,10 +61,7 @@ export default function WorkPage() {
                             {p.tags?.length ? (
                               <div className="mt-2 flex flex-wrap gap-2">
                                 {p.tags.map((t) => (
-                                  <span
-                                    key={t}
-                                    className="text-[11px] font-mono px-2 py-1 rounded-full bg-neutral-100 text-neutral-700"
-                                  >
+                                  <span key={t} className="text-[11px] font-mono px-2 py-1 rounded-full bg-neutral-100 text-neutral-700">
                                     {t}
                                   </span>
                                 ))}
@@ -90,7 +74,6 @@ export default function WorkPage() {
                           </div>
                         </Link>
 
-                        {/* keep a light divider between cards (optional) */}
                         <div className="mt-6 h-px bg-neutral-200" />
                       </li>
                     ))}
