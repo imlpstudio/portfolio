@@ -5,23 +5,24 @@ import * as Icons from "lucide-react";
 import { socials as rawSocials } from "@/data/social";
 
 type IconName = keyof typeof Icons;
-type LucideIcon = React.ComponentType<React.SVGProps<SVGSVGElement>>;
+type IconComponent = React.ComponentType<React.SVGProps<SVGSVGElement>>;
 
-type Social = {
-  label: string;
-  href: string;
-  icon: IconName; // must match a Lucide icon name (e.g., "Github", "Linkedin", "Mail")
-};
+type RawSocial = { label: string; href: string; icon: string };
+type Social = { label: string; href: string; icon: IconName };
 
-const links: Social[] = (rawSocials as Array<{ label: string; href: string; icon: string }>)
-  .map((s) => ({ label: s.label, href: s.href, icon: s.icon as IconName }))
-  .filter((s) => s.icon in Icons);
+function isIconName(name: string): name is IconName {
+  return name in Icons;
+}
+
+const links: Social[] = (rawSocials as ReadonlyArray<RawSocial>)
+  .filter((s): s is RawSocial & { icon: IconName } => isIconName(s.icon))
+  .map((s) => ({ label: s.label, href: s.href, icon: s.icon }));
 
 export default function SocialLinks({ className = "" }: { className?: string }) {
   return (
     <div className={`flex items-center gap-3 ${className}`}>
       {links.map((s) => {
-        const Icon = Icons[s.icon] as LucideIcon;
+        const Icon = Icons[s.icon] as IconComponent;
         return (
           <Link
             key={s.href}
