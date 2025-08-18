@@ -9,7 +9,6 @@ const links = [
   { href: "/work", label: "WORK" },
   { href: "/services", label: "SERVICES" },
   { href: "/about", label: "ABOUT" },
-  { href: "/contact", label: "CONTACT" },
 ];
 
 export default function NotebookNav() {
