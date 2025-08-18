@@ -21,16 +21,24 @@ function normalizeIconName(name: string): IconName | null {
     instagram: "Instagram",
     youtube: "Youtube",
   };
-  const guess = map[name.toLowerCase()] ?? (name.charAt(0).toUpperCase() + name.slice(1));
-  return guess in Icons ? (guess as IconName) : null;
+  const guessed = map[name.toLowerCase()] ?? (name.charAt(0).toUpperCase() + name.slice(1));
+  return guessed in Icons ? (guessed as IconName) : null;
 }
 
-const links: Social[] = (rawSocials as ReadonlyArray<RawSocial>)
-  .map((s) => {
-    const icon = normalizeIconName(s.icon);
-    return icon ? ({ label: s.label, href: s.href, icon } as Social) : null;
-  })
-  .filter((x): x is Social => x !== null);
+function toSocials(input: unknown): Social[] {
+  if (!Array.isArray(input)) return [];
+  const out: Social[] = [];
+  for (const item of input) {
+    const it = item as Partial<RawSocial>;
+    if (typeof it?.label !== "string" || typeof it?.href !== "string" || typeof it?.icon !== "string") continue;
+    const icon = normalizeIconName(it.icon);
+    if (!icon) continue;
+    out.push({ label: it.label, href: it.href, icon });
+  }
+  return out;
+}
+
+const links = toSocials(rawSocials);
 
 export default function SocialLinks({ className = "" }: { className?: string }) {
   return (
@@ -54,4 +62,3 @@ export default function SocialLinks({ className = "" }: { className?: string }) 
     </div>
   );
 }
-TS

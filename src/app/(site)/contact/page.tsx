@@ -6,7 +6,9 @@ type ContactPayload = {
   message: string;
 };
 
-type ContactResponse = { ok: true } | { ok: false; error: string };
+type ContactResponse =
+  | { ok: true }
+  | { ok: false; error: string };
 
 function isContactResponse(x: unknown): x is ContactResponse {
   if (typeof x !== "object" || x === null) return false;
@@ -26,17 +28,20 @@ export default function ContactPage() {
     setPending(true);
 
     const form = e.currentTarget;
-    const name = (form.elements.namedItem("name") as HTMLInputElement | null)?.value.trim() ?? "";
-    const email = (form.elements.namedItem("email") as HTMLInputElement | null)?.value.trim() ?? "";
-    const message = (form.elements.namedItem("message") as HTMLTextAreaElement | null)?.value.trim() ?? "";
+    const name =
+      (form.elements.namedItem("name") as HTMLInputElement | null)?.value.trim() ?? "";
+    const email =
+      (form.elements.namedItem("email") as HTMLInputElement | null)?.value.trim() ?? "";
+    const message =
+      (form.elements.namedItem("message") as HTMLTextAreaElement | null)?.value.trim() ?? "";
 
-    const data: ContactPayload = { name, email, message };
+    const payload: ContactPayload = { name, email, message };
 
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
 
       const json: unknown = await res.json();
@@ -89,4 +94,3 @@ export default function ContactPage() {
     </section>
   );
 }
-TS
