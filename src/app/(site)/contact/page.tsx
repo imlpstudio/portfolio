@@ -2,106 +2,96 @@
 
 import { useState, type ChangeEvent, type FormEvent } from "react";
 
-type FormFields = {
+type FormState = {
   name: string;
   email: string;
   message: string;
 };
 
-type SubmitState = "idle" | "submitting" | "success" | "error";
+type SubmitStatus = "idle" | "sending" | "sent" | "error";
 
 export default function ContactPage() {
-  const [fields, setFields] = useState<FormFields>({
-    name: "",
-    email: "",
-    message: "",
-  });
-  const [status, setStatus] = useState<SubmitState>("idle");
+  const [form, setForm] = useState<FormState>({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState<SubmitStatus>("idle");
 
-  function onChange(
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) {
+  function onChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
-    setFields((prev) => ({ ...prev, [name]: value }));
+    setForm((prev) => ({ ...prev, [name]: value }));
   }
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setStatus("submitting");
+    setStatus("sending");
     try {
-      // Safe even if you don't have this API; failure is handled in UI.
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(fields),
+        body: JSON.stringify(form),
       });
-      if (!res.ok) throw new Error("Failed");
-      setStatus("success");
+      if (!res.ok) throw new Error("Request failed");
+      setStatus("sent");
     } catch {
       setStatus("error");
     }
   }
 
   return (
-    <section className="mx-auto max-w-xl px-5 py-12">
-      <h1 className="text-2xl font-bold">Contact</h1>
-      <p className="mt-2 text-neutral-600">
-        Tell me about your project and I’ll get back to you.
-      </p>
+    <section className="bg-white text-neutral-900">
+      <div className="mx-auto max-w-3xl px-5 sm:px-6 lg:px-12 py-12">
+        <h1 className="text-3xl font-bold">Contact</h1>
 
-      <form onSubmit={onSubmit} className="mt-8 space-y-4">
-        <div>
-          <label className="block text-sm font-medium">Name</label>
-          <input
-            name="name"
-            value={fields.name}
-            onChange={onChange}
-            className="mt-1 w-full rounded-md border px-3 py-2"
-            required
-          />
-        </div>
+        <form onSubmit={onSubmit} className="mt-6 space-y-4">
+          <label className="block">
+            <span className="text-sm text-neutral-600">Name</span>
+            <input
+              name="name"
+              value={form.name}
+              onChange={onChange}
+              required
+              className="mt-1 w-full rounded-lg border px-3 py-2"
+            />
+          </label>
 
-        <div>
-          <label className="block text-sm font-medium">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={fields.email}
-            onChange={onChange}
-            className="mt-1 w-full rounded-md border px-3 py-2"
-            required
-          />
-        </div>
+          <label className="block">
+            <span className="text-sm text-neutral-600">Email</span>
+            <input
+              type="email"
+              name="email"
+              value={form.email}
+              onChange={onChange}
+              required
+              className="mt-1 w-full rounded-lg border px-3 py-2"
+            />
+          </label>
 
-        <div>
-          <label className="block text-sm font-medium">Message</label>
-          <textarea
-            name="message"
-            value={fields.message}
-            onChange={onChange}
-            rows={6}
-            className="mt-1 w-full rounded-md border px-3 py-2"
-            required
-          />
-        </div>
+          <label className="block">
+            <span className="text-sm text-neutral-600">Message</span>
+            <textarea
+              name="message"
+              value={form.message}
+              onChange={onChange}
+              rows={5}
+              required
+              className="mt-1 w-full rounded-lg border px-3 py-2"
+            />
+          </label>
 
-        <button
-          type="submit"
-          disabled={status === "submitting"}
-          className="rounded-md bg-black px-4 py-2 text-white disabled:opacity-60"
-        >
-          {status === "submitting" ? "Sending…" : "Send"}
-        </button>
+          <button
+            type="submit"
+            disabled={status === "sending"}
+            className="rounded-xl bg-black px-4 py-2 text-white disabled:opacity-60"
+          >
+            {status === "sending" ? "Sending…" : "Send"}
+          </button>
 
-        {status === "success" && (
-          <p className="text-sm text-green-700">Thanks—message sent.</p>
-        )}
-        {status === "error" && (
-          <p className="text-sm text-red-600">
-            Something went wrong. You can also email me directly.
-          </p>
-        )}
-      </form>
+          {status === "sent" && (
+            <p className="text-sm text-green-600">Thanks! I’ll get back to you shortly.</p>
+          )}
+          {status === "error" && (
+            <p className="text-sm text-red-600">Something went wrong. Try again.</p>
+          )}
+        </form>
+      </div>
     </section>
   );
 }

@@ -1,33 +1,48 @@
 import Link from "next/link";
+import type { SVGProps } from "react";
+
+/** An SVG icon component signature (e.g., from lucide-react). */
+type IconComponent = (props: SVGProps<SVGSVGElement>) => JSX.Element;
 
 type Social = {
   href: string;
   label: string;
-  Icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  icon?: IconComponent;
+  external?: boolean;
 };
 
-const SOCIALS: Social[] = [
-  { href: "https://www.linkedin.com/in/your-handle", label: "LinkedIn" },
-  { href: "https://x.com/your-handle", label: "X / Twitter" },
-  { href: "https://www.instagram.com/your-handle", label: "Instagram" },
-  { href: "mailto:you@example.com", label: "Email" },
+const socials: Social[] = [
+  // Add your icons if you use lucide/react or similar. Leaving icons optional keeps typing strict.
+  { href: "https://github.com/imlpstudio", label: "GitHub", external: true },
+  { href: "https://www.linkedin.com", label: "LinkedIn", external: true },
+  { href: "/contact", label: "Email" },
 ];
 
-export default function SocialLinks({ className }: { className?: string }) {
+export default function SocialLinks({ className = "" }: { className?: string }) {
   return (
-    <nav className={className}>
-      <ul className="flex flex-wrap gap-3 text-sm">
-        {SOCIALS.map(({ href, label, Icon }) => (
-          <li key={href}>
-            <Link
-              href={href}
-              target={href.startsWith("http") ? "_blank" : undefined}
-              className="inline-flex items-center gap-2 rounded-md border px-2.5 py-1.5 hover:bg-neutral-50"
-              aria-label={label}
-            >
-              {Icon ? <Icon width={16} height={16} /> : null}
-              <span>{label}</span>
-            </Link>
+    <nav className={className} aria-label="Social links">
+      <ul className="flex gap-3 text-sm">
+        {socials.map(({ href, label, icon: Icon, external }) => (
+          <li key={label}>
+            {external ? (
+              <a
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-md border px-2 py-1 hover:bg-neutral-50"
+                aria-label={label}
+              >
+                {Icon ? <Icon width={16} height={16} /> : label}
+              </a>
+            ) : (
+              <Link
+                href={href}
+                className="rounded-md border px-2 py-1 hover:bg-neutral-50"
+                aria-label={label}
+              >
+                {Icon ? <Icon width={16} height={16} /> : label}
+              </Link>
+            )}
           </li>
         ))}
       </ul>
