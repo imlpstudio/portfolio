@@ -10,6 +10,14 @@ type ContactPayload = {
 
 type ContactResponse = { ok: true } | { ok: false; error: string };
 
+function isContactResponse(x: unknown): x is ContactResponse {
+  if (typeof x !== "object" || x === null) return false;
+  const v = x as Record<string, unknown>;
+  if (v.ok === true) return true;
+  if (v.ok === false && typeof v.error === "string") return true;
+  return false;
+}
+
 export default function ContactPage() {
   const [pending, setPending] = useState(false);
   const [done, setDone] = useState<null | "ok" | string>(null);
@@ -33,15 +41,15 @@ export default function ContactPage() {
         body: JSON.stringify(data),
       });
 
-      const json = (await res.json()) as ContactResponse;
-      if (!res.ok || !json || json.ok !== true) {
-        const err = (!json || json.ok !== true) && "error" in (json as any) ? (json as any).error : "Failed to send";
-        setDone(typeof err === "string" ? err : "Failed to send");
+      const json: unknown = await res.json();
+      if (!res.ok || !isContactResponse(json) || json.ok !== true) {
+        const err = isContactResponse(json) && json.ok === false ? json.error : "Failed to send";
+        setDone(err);
       } else {
         setDone("ok");
         form.reset();
       }
-    } catch (err) {
+    } catch {
       setDone("Network error");
     } finally {
       setPending(false);
