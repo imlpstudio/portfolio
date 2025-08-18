@@ -18,9 +18,9 @@ export default function ContactPage() {
   });
   const [status, setStatus] = useState<SubmitState>("idle");
 
-  function onChange<
-    T extends HTMLInputElement | HTMLTextAreaElement
-  >(e: ChangeEvent<T>) {
+  function onChange(
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) {
     const { name, value } = e.target;
     setFields((prev) => ({ ...prev, [name]: value }));
   }
@@ -28,19 +28,16 @@ export default function ContactPage() {
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("submitting");
-
     try {
-      // If you have an API route, this will call it; otherwise it will still succeed quietly.
+      // Safe even if you don't have this API; failure is handled in UI.
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(fields),
       });
-
-      if (!res.ok) throw new Error("Request failed");
+      if (!res.ok) throw new Error("Failed");
       setStatus("success");
     } catch {
-      // Don’t fail the build if there is no API—just show success/error UI.
       setStatus("error");
     }
   }
@@ -82,8 +79,8 @@ export default function ContactPage() {
             name="message"
             value={fields.message}
             onChange={onChange}
-            className="mt-1 w-full rounded-md border px-3 py-2"
             rows={6}
+            className="mt-1 w-full rounded-md border px-3 py-2"
             required
           />
         </div>
