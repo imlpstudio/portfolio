@@ -1,36 +1,85 @@
 "use client";
+
 import { useState } from "react";
-import Container from "@/components/Container";
+
+type ContactPayload = {
+  name: string;
+  email: string;
+  message: string;
+};
+
+type ContactResponse = { ok: true } | { ok: false; error: string };
 
 export default function ContactPage() {
-  const [status, setStatus] = useState<"idle"|"ok"|"err">("idle");
+  const [pending, setPending] = useState(false);
+  const [done, setDone] = useState<null | "ok" | string>(null);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setDone(null);
+    setPending(true);
+
     const form = e.currentTarget;
-    const formData = new FormData(form);
-    const res = await fetch("/api/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(Object.fromEntries(formData as any)),
-    });
-    setStatus(res.ok ? "ok" : "err");
-    if (res.ok) form.reset();
+    const data: ContactPayload = {
+      name: (form.elements.namedItem("name") as HTMLInputElement).value.trim(),
+      email: (form.elements.namedItem("email") as HTMLInputElement).value.trim(),
+      message: (form.elements.namedItem("message") as HTMLTextAreaElement).value.trim(),
+    };
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const json = (await res.json()) as ContactResponse;
+      if (!res.ok || !json || json.ok !== true) {
+        const err = (!json || json.ok !== true) && "error" in (json as any) ? (json as any).error : "Failed to send";
+        setDone(typeof err === "string" ? err : "Failed to send");
+      } else {
+        setDone("ok");
+        form.reset();
+      }
+    } catch (err) {
+      setDone("Network error");
+    } finally {
+      setPending(false);
+    }
   }
 
   return (
-    <Container>
-      <h1 className="mt-12 text-3xl font-bold">Contact</h1>
-      <form onSubmit={onSubmit} className="mt-6 max-w-lg space-y-4">
-        <input className="w-full border rounded-xl px-3 py-2" name="name" placeholder="Your name" required />
-        <input className="w-full border rounded-xl px-3 py-2" type="email" name="email" placeholder="you@example.com" required />
-        {/* honeypot */}
-        <input className="hidden" tabIndex={-1} autoComplete="off" name="website" />
-        <textarea className="w-full border rounded-xl px-3 py-2 h-40" name="message" placeholder="What are we building?" required />
-        <button className="rounded-xl px-4 py-2 border bg-black text-white">Send</button>
-        {status==="ok" && <p className="text-green-600 text-sm">Thanks — I’ll reply soon.</p>}
-        {status==="err" && <p className="text-red-600 text-sm">Something went wrong. Please email contact@imlpstudio.com.</p>}
+    <section className="mx-auto max-w-2xl px-5 py-12">
+      <h1 className="text-3xl font-bold">Contact</h1>
+      <p className="mt-2 text-neutral-600">Tell me a bit about your project.</p>
+
+      <form onSubmit={onSubmit} className="mt-8 space-y-4">
+        <div>
+          <label htmlFor="name" className="block text-sm font-medium">Name</label>
+          <input id="name" name="name" required className="mt-1 w-full rounded-md border px-3 py-2" />
+        </div>
+
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium">Email</label>
+          <input id="email" name="email" type="email" required className="mt-1 w-full rounded-md border px-3 py-2" />
+        </div>
+
+        <div>
+          <label htmlFor="message" className="block text-sm font-medium">Message</label>
+          <textarea id="message" name="message" required rows={6} className="mt-1 w-full rounded-md border px-3 py-2" />
+        </div>
+
+        <button
+          type="submit"
+          disabled={pending}
+          className="inline-flex items-center rounded-md bg-black px-4 py-2 text-white disabled:opacity-60"
+        >
+          {pending ? "Sending…" : "Send"}
+        </button>
+
+        {done === "ok" && <p className="text-sm text-green-600">Thanks — I’ll get back to you shortly.</p>}
+        {done && done !== "ok" && <p className="text-sm text-red-600">{done}</p>}
       </form>
-    </Container>
+    </section>
   );
 }
