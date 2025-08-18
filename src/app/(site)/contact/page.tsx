@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 
 type ContactPayload = {
@@ -28,11 +26,11 @@ export default function ContactPage() {
     setPending(true);
 
     const form = e.currentTarget;
-    const data: ContactPayload = {
-      name: (form.elements.namedItem("name") as HTMLInputElement).value.trim(),
-      email: (form.elements.namedItem("email") as HTMLInputElement).value.trim(),
-      message: (form.elements.namedItem("message") as HTMLTextAreaElement).value.trim(),
-    };
+    const name = (form.elements.namedItem("name") as HTMLInputElement | null)?.value.trim() ?? "";
+    const email = (form.elements.namedItem("email") as HTMLInputElement | null)?.value.trim() ?? "";
+    const message = (form.elements.namedItem("message") as HTMLTextAreaElement | null)?.value.trim() ?? "";
+
+    const data: ContactPayload = { name, email, message };
 
     try {
       const res = await fetch("/api/contact", {
@@ -91,3 +89,4 @@ export default function ContactPage() {
     </section>
   );
 }
+TS
