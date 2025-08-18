@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+type Props = { params: { slug: string } };
+
 const PROJECTS: Record<
   string,
   () => Promise<{ default: React.ComponentType; meta?: Metadata }>
@@ -15,16 +17,16 @@ export function generateStaticParams() {
   return Object.keys(PROJECTS).map((slug) => ({ slug }));
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const loader = PROJECTS[params.slug];
   if (!loader) return {};
   const mod = await loader();
   return mod.meta ?? {};
 }
 
-export default async function WorkDetailPage({ params }: { params: { slug: string } }) {
+export default async function Page({ params }: Props) {
   const loader = PROJECTS[params.slug];
-  if (!loader) return notFound();
+  if (!loader) notFound();
   const mod = await loader();
   const Project = mod.default;
   return <Project />;

@@ -3,7 +3,6 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { defaultMetadata } from "@/lib/seo";
 import { GoogleAnalytics } from "@/lib/analytics";
 
@@ -19,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-sans min-h-screen grid grid-rows-[auto_1fr_auto] bg-white text-neutral-900">
         <Navbar />
         <main>{children}</main>
-        <Footer />
+        
         <GoogleAnalytics />
       </body>
     </html>
