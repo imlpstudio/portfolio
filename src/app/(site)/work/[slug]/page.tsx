@@ -7,9 +7,9 @@ const PROJECTS: Record<
   string,
   () => Promise<{ default: React.ComponentType; meta?: Metadata }>
 > = {
-  "tape-master": () => import("../_projects/tape-master"),
+  // "tape-master": () => import("../_projects/tape-master"),
   "ergonomic-brush": () => import("../_projects/brush"),
-  "tibetan-smacker": () => import("../_projects/tibetan-smacker"),
+  // "tibetan-smacker": () => import("../_projects/tibetan-smacker"),
   // Add these back only when their pages exist:
   // "ergonomic-fixture": () => import("../_projects/ergonomic-fixture"),
   // "esp32-logger": () => import("../_projects/esp32-logger"),

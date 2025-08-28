@@ -5,8 +5,6 @@ import HeroReel from "@/components/HeroReel";
 export default function Home() {
   const heroImages = [
     { src: "/hero/1a.png", alt: "Prototype & rig" },
-    { src: "/hero/2a.jpg", alt: "CAD & enclosure" },
-    { src: "/hero/3a.png", alt: "Electronics & test" },
   ];
 
   return (
@@ -26,8 +24,11 @@ export default function Home() {
                 IMLP Studio
               </h1>
               <p className="mt-4 text-base sm:text-lg text-neutral-800">
-                From ergonomics to electronics — concept → CAD → prototype → ship.
-              </p>
+  <strong>Sketches into systems</strong> — ft. ergonomic tools, 
+  sound-driven devices, and connected prototypes that go beyond the screen. 
+  Grounded in industrial design and engineering. 
+</p>
+
 
               <div className="mt-6 sm:mt-8 flex flex-wrap gap-3">
                 <Link
@@ -46,11 +47,11 @@ export default function Home() {
             </div>
 
             {/* hero media */}
-            <div className="relative mt-8 lg:mt-0">
+            {/* <div className="relative mt-8 lg:mt-0">
               <HeroReel images={heroImages} />
               <span className="pointer-events-none absolute -top-1.5 -left-1.5 h-10 w-10 rounded-tl-md border-t-2 border-l-2 border-black" />
               <span className="pointer-events-none absolute -bottom-1.5 -right-1.5 h-10 w-10 rounded-br-md border-b-2 border-r-2 border-black" />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

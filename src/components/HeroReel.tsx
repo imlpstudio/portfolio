@@ -7,9 +7,6 @@ type Slide = { src: string; alt?: string };
 
 // Default to your files in /public/hero
 const DEFAULT_IMAGES: Slide[] = [
-  { src: "/hero/1a.png", alt: "Prototype & rig" },
-  { src: "/hero/2a.png", alt: "CAD & enclosure" },
-  { src: "/hero/tibet.png", alt: "Electronics & test" },
 ];
 
 export default function HeroReel({
