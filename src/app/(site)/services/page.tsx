@@ -27,8 +27,7 @@ export default function ServicesPage() {
                 Practical help, end-to-end
               </h1>
               <p className="mt-3 max-w-2xl text-neutral-700">
-                I partner with founders, labs, and trades to move ideas from
-                insight → CAD → prototype → launch. Clear scope, fast
+               Move ideas from insight → CAD → prototype → launch. Clear scope, fast
                 iteration, and artifacts you can ship.
               </p>
             </header>

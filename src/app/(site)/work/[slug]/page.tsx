@@ -8,8 +8,9 @@ const PROJECTS: Record<
   () => Promise<{ default: React.ComponentType; meta?: Metadata }>
 > = {
   "tape-master": () => import("../_projects/tape-master"),
-  
+  "bedside-frequency": () => import("../_projects/bedside-frequency"),
   "pro-bucket-handler": () => import("../_projects/pro-bucket-handler"),
+  "chess-timer": () => import("../_projects/chess-timer"),
   // "tibetan-smacker": () => import("../_projects/tibetan-smacker"),
   // Add these back only when their pages exist:
   // "ergonomic-fixture": () => import("../_projects/ergonomic-fixture"),

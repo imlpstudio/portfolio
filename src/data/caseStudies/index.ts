@@ -1,7 +1,9 @@
 import tapeMaster from "./tape-master";
 import proBucketHandler from "./pro-bucket-handler";
+import bedsideFrequency from "./bedside-frequency";
+import chessTimer from "./chess-timer";
 
-// If you don't have pages for these yet, leave them out for now to avoid 404s
+// If you don't have these yet, leave them commented to avoid 404s
 // import ergonomicFixture from "./ergonomic-fixture";
 // import esp32Logger from "./esp32-logger";
 
@@ -17,6 +19,8 @@ export type CaseStudy = {
 export const CASE_STUDIES: CaseStudy[] = [
   tapeMaster,
   proBucketHandler,
+  bedsideFrequency,
+  chessTimer,
   // ergonomicFixture,
   // esp32Logger,
 ].sort((a, b) => +new Date(b.date) - +new Date(a.date));
@@ -24,7 +28,7 @@ export const CASE_STUDIES: CaseStudy[] = [
 export type CaseStudiesByYear = Record<string, CaseStudy[]>;
 
 export function groupByYear(items: CaseStudy[]): CaseStudiesByYear {
-  const by: CaseStudiesByYear = {};
+  const by: Record<string, CaseStudy[]> = {};
   for (const cs of items) {
     const y = new Date(cs.date).getFullYear().toString();
     (by[y] ||= []).push(cs);
@@ -36,6 +40,7 @@ export function groupByYear(items: CaseStudy[]): CaseStudiesByYear {
 }
 
 export const CASE_STUDIES_BY_YEAR = groupByYear(CASE_STUDIES);
+
 export const PROJECT_YEARS = Object.keys(CASE_STUDIES_BY_YEAR)
   .map(Number)
   .sort((a, b) => b - a)
