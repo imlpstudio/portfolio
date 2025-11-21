@@ -1,6 +1,6 @@
 import tapeMaster from "./tape-master";
-import brush from "./brush";
-import tibetansmacker from "./tibetan-smacker";
+import proBucketHandler from "./pro-bucket-handler";
+
 // If you don't have pages for these yet, leave them out for now to avoid 404s
 // import ergonomicFixture from "./ergonomic-fixture";
 // import esp32Logger from "./esp32-logger";
@@ -16,6 +16,7 @@ export type CaseStudy = {
 
 export const CASE_STUDIES: CaseStudy[] = [
   tapeMaster,
+  proBucketHandler,
   // ergonomicFixture,
   // esp32Logger,
 ].sort((a, b) => +new Date(b.date) - +new Date(a.date));

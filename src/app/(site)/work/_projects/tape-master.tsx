@@ -41,7 +41,7 @@ export default function TapeMasterPage() {
             <header id="intro" className="scroll-mt-24 space-y-4">
               <p className="text-sm text-neutral-500">2025-07</p>
               <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-                TapePro+
+                TapePro++++
               </h1>
               <p className="text-neutral-700 -mt-4 italic">
                 Ergonomic, waist-holsterable tape system with magnetic retention and quick indexing.
