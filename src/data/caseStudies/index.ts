@@ -15,7 +15,7 @@ export type CaseStudy = {
 };
 
 export const CASE_STUDIES: CaseStudy[] = [
-  // tapeMaster,
+  tapeMaster,
   // ergonomicFixture,
   // esp32Logger,
 ].sort((a, b) => +new Date(b.date) - +new Date(a.date));

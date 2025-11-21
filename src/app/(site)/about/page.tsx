@@ -24,8 +24,8 @@ export default function AboutPage() {
                 aria-hidden
                 className="hidden sm:block pointer-events-none absolute left-0 top-0 bottom-0 w-[3px]"
               />
-              <p className="text-xs sm:text-sm font-mono text-neutral-900/80">
-                B.S. Product Design &amp; Engineering
+              <p className="text-xs sm:text-sm font-mono text-red-600">
+               Stanford Product Design Engineer
               </p>
               <h1 className="mt-2 text-4xl sm:text-5xl lg:text-5xl font-extrabold tracking-tight">
                 About Me
@@ -33,12 +33,9 @@ export default function AboutPage() {
               {/* Approach (short + concrete) */}
               <div className="mt-5 space-y-2 text-[15px]">
                 <p className="text-neutral-900">
-                  <span className="font-semibold">Approach:</span> observe the job, model the motion, prototype fast,
-                  and simplify until the tool “disappears” in use.
+                   From job-site prototypes to IoT devices, I build fast, test in the field, and simplify until the design disappears in use.
                 </p>
-                <p className="text-neutral-700">
-                  First principles over bells-and-whistles. Evidence over ego. Ship, learn, iterate.
-                </p>
+                
               </div>
 
               {/* Toolbox chips */}
